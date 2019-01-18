@@ -32,9 +32,9 @@ These issues made me think about Recommendation Systems. Where these problems ca
 1. Is a specific Video, Author (Youtuber) or Category reachable from a particular starting point?
 1. Better Questions?
 
-In the 3rd question, I tossed a term **Content Deviation** which by that I mean how does the content change over time. (let say we started with a video in *"sport"* category, after pressing Next button *X* times, which category we will be in?). These questions are relatively simple to answer, the only challenge we have to face for solving them is mining/extracting Youtube's recommendation graph. The harder problem one can think is to reverse engineer Youtube's recommendation algorithm.
+In the 3rd question, I tossed a term **Content Deviation** which by that I mean how does the content change over time. (let say we started with a video in *"sport"* category, after pressing Next button *X* times, which category we will be in?). These questions are relatively simple to answer, the only challenge we have to face for solving them is mining/extracting Youtube's recommendation graph.
 
-## Grab Youtube
+## Exploring Youtube
 
 For extracting and Analyzing Youtube's Recommendation System, I use three things: Javascript, Puppeteer, and Neo4J. Puppeteer is a headless Chrome Node API, which helps me to navigate Youtube. Neo4J is my favorite graph database for storing extracted recommendation chains/graphs.
 
@@ -137,7 +137,7 @@ let ytWalker = async (initialVideoURL) => {
         // Give some time to Youtube
         await page.waitFor(4999);
 
-        const add_to_neo4j = async (video1, video2, chainId) => {
+        const addToNeo4j = async (video1, video2, chainId) => {
             await insert_to_neo4j(video1);
             await insert_to_neo4j(video2);
             await create_recommendation_link(video1, video2).then(() => {
@@ -145,7 +145,7 @@ let ytWalker = async (initialVideoURL) => {
             })
         }
 
-        add_to_neo4j(lastVideoUrl, currentVideoUrl, (1000 - chainCtr))
+        addToNeo4j(lastVideoUrl, currentVideoUrl, (1000 - chainCtr))
 
         lastVideoUrl = currentVideoUrl;
         chainCtr--
