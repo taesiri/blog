@@ -24,7 +24,6 @@ title:		           'thoughtt'
 description:	       '...thinking aloud'
 url:                 https://taesiri.com
 site.url:            https://taesiri.com
-site.github.url:     https://taesiri.com
 enforce_ssl:         taesiri.com
 author:              'Mohammad Reza Taesiri'
 
