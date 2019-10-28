@@ -1,0 +1,22 @@
+ubuntudists :
+  - name: variable a
+    path: '../assets/img/uvs/ubuntud_dist_a.png'
+  - name: variable d
+    path: '../assets/img/uvs/ubuntud_dist_d.png'
+  - name: variable e
+    path: '../assets/img/uvs/ubuntud_dist_e.png'
+  - name: variable f
+    path: '../assets/img/uvs/ubuntud_dist_f.png'
+  - name: variable g
+    path: '../assets/img/uvs/ubuntud_dist_g.png'
+ubuntulastdigits :
+  - name: variable a
+    path: '../assets/img/uvs/ubuntu_2d_a.png'
+  - name: variable d
+    path: '../assets/img/uvs/ubuntu_2d_d.png'
+  - name: variable e
+    path: '../assets/img/uvs/ubuntu_2d_e.png'
+  - name: variable f
+    path: '../assets/img/uvs/ubuntu_2d_f.png'
+  - name: variable g
+    path: '../assets/img/uvs/ubuntu_2d_g.png'

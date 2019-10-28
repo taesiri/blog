@@ -1,0 +1,21 @@
+<script> 
+function changeImage(imagePath, imageId)
+{
+    var img = document.getElementById(imageId);
+    img.src= imagePath;
+}
+</script>
+
+<center>
+    <div>
+        {% for plot in include.plots%}
+        <button type="button" class="btn btn-primary" onclick="changeImage('{{plot.path}}', '{{include.imageId}}');"> {{plot.name}} </button>
+        {% endfor %}
+    </div>
+    
+</center>
+
+<figure class="image">
+    <img id="{{ include.imageId }}" src="{{include.plots[0].path}}" alt="">
+    <figcaption>{{ include.description }}</figcaption>
+</figure>
