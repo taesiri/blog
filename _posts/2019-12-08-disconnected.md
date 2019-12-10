@@ -409,7 +409,7 @@ Geneva is a set of evolutionary techniques to evade restrictions on the client-s
 1. [Github Page](https://github.com/Kkevsterrr/geneva) 
 1. [A cool writeup](http://blog.zorinaq.com/my-experience-with-the-great-firewall-of-china/) by Marc Bevand about his experience in China. I highly recommend this to read for everyone that wants to have a better understanding.
 
-## Image Creadits
+## Image Credits
 
 1. [Cover Image by  Jack Moreh](https://www.stockvault.net/photo/239787/face-off-challenge-between-businessmen-overcoming-barriers)
 1. Diragrams made with [Draw.io](https://www.draw.io/)
