@@ -401,13 +401,26 @@ ENTRYPOINT ["/bin/chisel"]
 
 ## Client side evasion with Geneva
 
-Geneva is a set of evolutionary techniques to evade restrictions on the client-side and without any help from the outside. This tool (and also other client-side methods) try to tamper, modify network packets to trick "Firewalls" into believing that packet is safe to travel in the network. I personally didn't test it but It is a cool tool to have inside your pocket.
+Geneva is one of the client-side evasion techniques which tries to bypass restrictions without any help from outside (a server). This tool (and also other client-side methods) try to tamper, modify network packets to trick "Firewalls" into believing that packet is safe to travel in the network. The difference between Geneva and other client-side tools is that Geneva uses Evolutionary algorithms to automatically find a new set of strategies to evade restrictions.
 
-### More About Geneva
+A Naïve approach to use a genetic algorithm for tampering the network packets would be in Bit-level, that's it, consider each packet's bitstream and manipulate those. This would, in theory, find all the possible manipulation types and eventually will find all the possible working strategies, but It is slow as hell! Not very useful. The authors of Geneva came up with a higher level manipulation scheme which is super fast and also useful. For example, the following directive will first duplicate ``ACK`` packets, and for the first duplicate, it will change the ``TCP flags`` field to ``RST``. See [Here](https://github.com/Kkevsterrr/geneva#strategy-dna) for more details.
 
+```bash
+[TCP:flags:A]-duplicate(tamper{TCP:flags:replace:R},)
+```
+
+This is a very powerful way to express strategies and works well with a genetic algorithm. Kudos to the authors of this paper!
+
+I did try Geneva last day but unfortunately, none of the strategies presented in [this file](https://github.com/Kkevsterrr/geneva/blob/master/strategies.md) worked for me! :-(
+
+### Learn more about this techniques and Geneva
+
+1. [Geneva Project Paper](https://geneva.cs.umd.edu/papers/geneva_ccs19.pdf)
 1. [Geneva Project Homepage](https://geneva.cs.umd.edu/)
-1. [Github Page](https://github.com/Kkevsterrr/geneva) 
-1. [A cool writeup](http://blog.zorinaq.com/my-experience-with-the-great-firewall-of-china/) by Marc Bevand about his experience in China. I highly recommend this to read for everyone that wants to have a better understanding.
+1. [Geneva Github Page](https://github.com/Kkevsterrr/geneva)
+1. [A Cool writeup](http://blog.zorinaq.com/my-experience-with-the-great-firewall-of-china/) by Marc Bevand about his experience in China. I highly recommend this to read for everyone that wants to have a better understanding.
+1. [GoodbyeDPI](https://github.com/ValdikSS/GoodbyeDPI) - Passive Deep Packet Inspection blocker and Active DPI circumvention utility
+1. [Green Tunnel](https://github.com/SadeghHayeri/GreenTunnel) - Green Tunnel is an anti-censorship utility designed to bypass DPI system that are put in place by various ISPs to block access to certain websites.
 
 ## Image Credits
 
