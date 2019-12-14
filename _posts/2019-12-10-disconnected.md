@@ -396,6 +396,7 @@ ENTRYPOINT ["/bin/chisel"]
 
 1. [Github Page](https://github.com/jpillora/chisel)
 1. [Official Docker](https://hub.docker.com/r/jpillora/chisel)
+1. [Setup Chisel on Heroku - Tutorial](https://medium.com/@spscream/socks5-server-using-heroku-docker-chisel-step-by-step-howto-8e6bb358f7ff)
 1. [Deploy Chisel On Heroku](https://github.com/mrluanma/chisel-heroku)
 1. [Crowbar](https://github.com/q3k/crowbar)
 
