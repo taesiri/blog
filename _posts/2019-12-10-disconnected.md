@@ -7,6 +7,8 @@ tags: [Random, Freedom, Disconnection]
 image: freenet/heading.jpg
 ---
 
+<link rel="stylesheet" href="../assets/css/table.css">
+
 I was born and raised on the Red Planet, Mars. The government here is a little different than what it is on Earth. For example, a couple of weeks ago, there was a moderate protest against the rocket fuel price. The price went up by 300% overnight and people really didn't like it that much. The government, on the other hand, executed the *DICT-504* protocol, effectively killing the internet for two weeks. This protocol assumes people are more *controllable* and *manageable* when they are isolated; when they are disconnected. We've been in this situation before, but for one or two days at most, this time was different. Many people fear in the future, the government executes *DICT-504* for a longer and longer period. After all, this is Mars, we are at least 50 Million kilometers away from the rest of the world, our government can do really anything and nobody really cares!
 
 My people have named this protocol, *The Disconnection*. In this post I am going to show some of the techniques to fight back, to resist. This is not a tutorial, tutorials are illegal here, this is a short list of things that I used and will be using to circumvent *The Disconnection*!
@@ -411,7 +413,33 @@ A Naïve approach to use a genetic algorithm for tampering the network packets w
 
 This is a very powerful way to express strategies and works well with a genetic algorithm. Kudos to the authors of this paper!
 
-I did try Geneva last day but unfortunately, none of the strategies presented in [this file](https://github.com/Kkevsterrr/geneva/blob/master/strategies.md) worked for me! :-(
+~~I did try Geneva last day but unfortunately, none of the strategies presented in [this file](https://github.com/Kkevsterrr/geneva/blob/master/strategies.md) worked for me! :-(~~
+
+**Update (12/14/19)**:  In my previous attempts, I made a few mistakes and after [reaching out to project owners](https://github.com/Kkevsterrr/geneva/issues/6), now Geneva works like a charm:
+
+{% include images.html url="../assets/img/freenet/70827438-82b4b100-1dfe-11ea-8ef6-e23f65087fbf.png" description="Browsing Twitter with Geneva" %}
+
+I tested all strategies published in the paper and found the following ones that work here.
+
+**What works with HTTP**
+
+| Species    | Sub-Species  | Variant   | Genetic Code                                                                                |
+|------------|--------------|-----------|---------------------------------------------------------------------------------------------|
+| TCB Desync | Inc. Dataofs | Small TTL |   `[TCP:flags:PA]-duplicate(tamper{TCP:dataofs:replace:10}(tamper{IP:ttl:replace:10},),)-\|`   |
+| TCB Desync | Inv. Payload | Small TTL | `[TCP:flags:PA]-duplicate(tamper{TCP:load:corrupt}(tamper{IP:ttl:replace:8},),)-\|`      |
+
+**What works with HTTPS**
+
+| Species      | Sub-Species | Variant     | Genetic Code                                                     |
+|--------------|-------------|-------------|------------------------------------------------------------------|
+| TCB Desync   | Simple      | Payload syn |   `[TCP:flags:S]-duplicate(,tamper{TCP:load:corrupt})-\|`  |
+| Segmentation | With ack    | Offsets     |  `[TCP:flags:PA]-fragment{tcp:8:False}-\| [TCP:flags:A]-tamper{TCP:seq:corrupt}-\|`                    |
+| Segmentation | Reassembly  | Offsets     | `[TCP:flags:PA]-fragment{tcp:8:True}(,fragment{tcp:4:True})-\|`  |
+| Segmentation | Simple      | In-Order    | `[TCP:flags:PA]-fragment{tcp:-1:True}-\| `                       |
+
+Certain websites don't quite work well just now, (like [BBC.CO.UK](https://www.bbc.co.uk/), and [Youtube](https://www.youtube.com/)), but that's not a problem, I am sure more strategies will fix this. (I also have to do more tests to find out what's wrong here, Clearly, Geneva works, that is the fact! I think these websites can't handle the traffic Geneva produces. Maybe!)
+
+I probably write a more in-depth blog post about Geneva, and why I am so excited about this particular project in the future.
 
 ### Learn more about this techniques and Geneva
 
