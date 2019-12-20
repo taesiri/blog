@@ -38,19 +38,23 @@ In the second paper "Integrating Automated Play in Level Co-Creation", or IAPLCC
 
 Here are some of my thoughts related to these papers.
 
-### As a Creativity tools
+## **As a Creativity tools**
 
 The concept of **Collaboration** very powerful in the context of creativity and has explored before. An example of that is the "**Drawing Apprentice: Co-Creative Drawing Partner**" and other works related to it. In either of these papers, the Authors created an AI-based tool that collaborates with the player/user. The problem that I have with these tools is the way they are operating at the moment.
 
-As a game designer, I think I am the God of my world; I don't share my canvas with anybody else, Yet alone let him/her/it to draw on my canvas. In the [demo of **CCLDML**](#demo1) you can see that most of the time, the demonstrator is trying to delete what the AI is created. This is a source of frustration and even in the User study inside the users report their level of frustration. I strongly believe there must be a way to control and preview what an AI wants to do and just allow the changes that the user wants.
+### Blind Sharing
+
+As a game designer, I think I am the God of my world; I don't share my canvas with anybody else, Yet alone let him/her/it to draw on my canvas. In the [demo of **CCLDML**](#demo1) you can see that most of the time, the demonstrator is trying to delete what the AI is created. This is a source of frustration and even in the User study inside the paper, users report their level of frustration. I strongly believe there must be a way to control and preview what the AI is gonna do and just allow the desirable changes.
+
+### Artistic Control
 
 Another problem is that the designer has no artistic control over the AI. Of course, the AI uses what designer made in the past as an input and will act on it, but I think it is still important to have control over what AI will do. For example, the number of tiles its gonna modify, or a way for specifying the total number of tiles with type ``X`` that the AI will generate.
 
 ### Loss of Generality
 
-I think in the second paper, IAPLCC, the authors are making a strong assumption about the type of game the designer would like to make. One can game a platformer game inside Super Mario Maker that doesn't require going form a location ``A`` to ``B``. For example, if I want to make a Wave-based game that the player must stay alive as long as he/she can; knowing a certain path is available inside the game is not helpful at all!
+I think in the second paper, IAPLCC, the authors are making a strong assumption about the type of game the designer would like to make. One can make a platformer game inside Super Mario Maker that doesn't require going form a location ``A`` to ``B``. For example, if I want to make a Survival/Wave-based game that the player must stay alive as long as he/she can; knowing a certain path is reachable inside the game is not  very helpful!
 
-### As an Algorithm
+## **As an Algorithm**
 
 As an algorithm, I think the used techniques are fairly limited. In Machine Learning literature, we have far more sophisticated models and tools that can be utilized here. In the next section, I will suggest methods, that I think will improve on the currently existing solutions.
 
@@ -62,23 +66,23 @@ Here I will suggest things that I think are helpful in the context of game level
 
 ### Compositional Pattern Producing Networks
 
-Compositional Pattern Producing Networks or CPPNs was invented by Kenneth O. Stanley back in 2007. It has been used before in many different contexts, from generating 2D patterns,3D shapes to Robotics. At its core, CPPNs are just neural networks, but unlike traditional neural networks, they pretty much can have any types of functions as nodes. (The choice of CPPN rather than regular Artificial Neural Network is described in Ken's paper).
+Compositional Pattern Producing Networks or CPPNs was invented by Kenneth O. Stanley back in 2007. It has been used before in many different contexts, from generating 2D patterns,3D shapes to Robotics. At its core, CPPNs are just neural networks, but unlike traditional neural networks, they pretty much can have any types of functions as nodes. (The choice of the name CPPN rather than regular Artificial Neural Network is described in Ken's paper).
 
 {% include images.html url="../assets/img/ai-level-design/picbreeder.png" description="Generating 2D patterns with CPPNs - Picbreeder" %}
 
 {% include images.html url="../assets/img/ai-level-design/endlessforms.png" description="Generating 3D Shapes with CPPNs - EndlessForms" %}
 
-When we use a NeuroEvolutionary technique, like NEAT, on CPPNs, they can become super powerful. But I don't think generating level with vanilla CPPN be a good idea (I am not sure, maybe it is or it is not!!). For example, someone tried to generate trains using CPPNs, but to me, the net results are not very interesting at this stage. [See here for the results](https://silky.github.io/posts/2018-04-15-cppns-for-procedural-landscape-generation.html#bonus-content-17-apr-2018)
+When we use a Neuro-Evolutionary technique, like NEAT, on CPPNs, they can become super powerful. I don’t think generating level with vanilla CPPN be a good idea, (I am not sure, maybe it is or it is not!!), but we certainly can use them somehow in the process. [For example, someone tried to generate trains using CPPNs, but to me, the net results are not very interesting at this stage. [See here for the results](https://silky.github.io/posts/2018-04-15-cppns-for-procedural-landscape-generation.html#bonus-content-17-apr-2018)]
 
 ### Deep Reinforcement Learning from Human Preferences
 
-In traditional (Deep) Reinforcement Learning, you need a very important piece called "Reward Function". This function is used to assess the performance of your RL agents and gives as a feedback and training signal to our RL algorithm. Coming up with a good reward function is a really hard task and requires lots of effort. Designing a Naïve reward function can cause our agent to exploit a given environment in ways we don't imagine. You can read more about this [here](https://openai.com/blog/faulty-reward-functions/) and [here](https://openai.com/blog/emergent-tool-use/#surprisingbehaviors). You can see the result of choosing a bad reward function here:
+In traditional (Deep) Reinforcement Learning, you need a very important piece called “Reward Function”. This function is used to assess the performance of your RL agents and gives it feedback and will be used as a training signal to our RL algorithm. Coming up with a good reward function is a really hard task and requires lots of effort. Designing a Naïve reward function can cause our agent to exploit a given environment in ways we don't imagine. You can read more about this [here](https://openai.com/blog/faulty-reward-functions/) and [here](https://openai.com/blog/emergent-tool-use/#surprisingbehaviors). You can see the result of choosing a bad reward function here:
 
 <p style="text-align: center;" id="demo3">
 <iframe width="560" height="315" src="https://www.youtube.com/embed/tlOIHko8ySg" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 </p>
 
-Of course, we can, in theory, replace a Reward function with humans, but in that case, our RL algorithm requires thousands and thousands on human evaluation. "Deep reinforcement learning from human preferences" is a collaboration between DeepMind and OpenAI to tackle this problem. Instead of using a Reward Function, We use a Reward Model. This model will be trained to match human preference. In this case, we can train our models faster (we don't need thousands and thousands of human inputs anymore) and we also can have human feedback in the loop, Yay! best of both worlds!
+Of course, we can, in theory, replace a Reward function with a human input, but in that case, our RL algorithm requires thousands and thousands of human evaluation. "Deep reinforcement learning from human preferences" is a collaboration between DeepMind and OpenAI to tackle this problem. Instead of using a "Reward Function", We use a "Reward Model". This model will be trained to match human preference. In this case, we can train our RL model faster (we don't need thousands and thousands of human inputs anymore) and we also can have human feedback in the loop, Yay! best of both worlds!
 
 <p style="text-align: center;" id="demo2">
 <iframe width="560" height="315" src="https://www.youtube.com/embed/oC7Cw3fu3gU" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> </p>
