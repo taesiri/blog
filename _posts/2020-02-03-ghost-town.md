@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "VMessy Gostly Trojanic Chiselling Town [DRAFT]"
+title: "VMessy Gostly Trojanic Chiselling Town"
 author: "Mohammad Reza Taesiri"
 categories: random
 tags: [Random, Freedom, Disconnection]
@@ -8,11 +8,27 @@ image: ghosts/heading.jpg
 ---
 
 <link rel="stylesheet" href="../assets/css/table.css">
+<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
 
 In this post, I am gonna introduce some easy to setup anti-disconnection techniques. This post continues my last post on how to prevent disconnection on my planet. This list is not by any means complete, but I try to keep it updated. Almost all guides here are taken from the internet and I just put them in one place, so kudos to the people who did this.
 
 ----
 
+## TL;DR
+
+| Method 	| Server 	| Server Params      	| Client         	|
+|--------	|--------	|--------------------	|----------------	|
+| <a href="#v2ray">V2Ray</a>  	| <a href="https://heroku.com/deploy?template=https://github.com/onplus/v2hero/tree/core-latest" rel="nofollow"><img src="https://camo.githubusercontent.com/c0824806f5221ebb7d25e559568582dd39dd1170/68747470733a2f2f7777772e6865726f6b7563646e2e636f6d2f6465706c6f792f627574746f6e2e706e67" alt="" data-canonical-src="https://www.herokucdn.com/deploy/button.png" style="max-width:100%;"></a>  	| ``UUID``           	|    <a href="../assets/other-contents/configs/sample.json"> Sample JSON <i class="fa fa-download"></i> </a> 	|
+| <a href="#gost">Gost</a>   	| <a href="https://heroku.com/deploy?template=https://github.com/xuiv/gost-heroku" rel="nofollow"><img src="https://camo.githubusercontent.com/c0824806f5221ebb7d25e559568582dd39dd1170/68747470733a2f2f7777772e6865726f6b7563646e2e636f6d2f6465706c6f792f627574746f6e2e706e67" alt="" data-canonical-src="https://www.herokucdn.com/deploy/button.png" style="max-width:100%;"></a> 	|                    Nothing	| <a href="#gost-client" >Client Command</a>	|
+| <a href="#chisel">Chisel</a> | <a href="https://heroku.com/deploy?template=https://github.com/mrluanma/chisel-heroku" rel="nofollow"><img src="https://camo.githubusercontent.com/83b0e95b38892b49184e07ad572c94c8038323fb/68747470733a2f2f7777772e6865726f6b7563646e2e636f6d2f6465706c6f792f627574746f6e2e737667" alt="Heroku Deploy" data-canonical-src="https://www.herokucdn.com/deploy/button.svg" style="max-width:100%;"></a> 	| ``USER:PASSWORDS`` 	|      <a href="#chisel-client">Client Command</a>          	|
+|  <a href="#trojan">Trojan</a>   	| [Installer Script](https://github.com/atrandys/trojan) 	|        Nothing            	|         Refer to installer script's repo      	|
+| <a href="#cloak">Cloak</a>  	| [Installer Script](https://github.com/HirbodBehnam/Shadowsocks-Cloak-Installer)  	|          Nothing          	|     Refer to installer script's repo           	|
+
+
+
+----
+
+<div id="v2ray"></div>
 ## V2Ray on Heroku
 
 ### Server
@@ -113,6 +129,7 @@ Client configuration can be tricky cause most GUI-based clients have some limita
 
 ----
 
+<div id="gost"></div>
 ## Gost on Heroku
 
 Gost is branded as a simple security tunnel written in Golang, but trust me, it is everything except for simple! It offers multiple transport layers, protocols, load-balancing, and a lot more.
@@ -123,7 +140,9 @@ The easiest way to deploy Gost on Heroku is with the help of a project called ``
 
 <a href="https://heroku.com/deploy?template=https://github.com/xuiv/gost-heroku" rel="nofollow"><img src="https://camo.githubusercontent.com/c0824806f5221ebb7d25e559568582dd39dd1170/68747470733a2f2f7777772e6865726f6b7563646e2e636f6d2f6465706c6f792f627574746f6e2e706e67" alt="" data-canonical-src="https://www.herokucdn.com/deploy/button.png" style="max-width:100%;"></a>
 
-### Clients
+### Clients 
+
+<div id="gost-client"></div>
 
 With ``Gost`` binary on any platform:
 
@@ -150,6 +169,7 @@ Other Clients:
 
 ----
 
+<div id="chisel"></div>
 ## Chisel
 
 I described Chisel in my previous post, So I just copy-paste whatever I wrote there, in here:
@@ -160,6 +180,7 @@ Chisel creates a TCP tunnel over HTTP and It is magically fast! I think faster t
 
 On the client it is as simple as running the following command:
 
+<div id="chisel-client"></div>
 ```bash
 chisel client --auth USER:PASSWORDS URL_OF_HEROKU_APP 0.0.0.0:1080:socks
 ```
@@ -189,6 +210,7 @@ ENTRYPOINT ["/bin/chisel"]
 
 ----
 
+<div id="trojan"></div>
 ## Trojan
 
 Trojan is the latest addition to our list, It is extremely fast and hard to detect. There is no magic "Deploy to Heroku" button just yet, but there are some easy to use scripts to set up a server in [this repository](https://github.com/atrandys/trojan). Here are one-line installers for server:
@@ -217,9 +239,10 @@ curl -O https://raw.githubusercontent.com/atrandys/trojan/master/trojan_install.
 
 ----
 
+<div id="cloak"></div>
 ## Cloak
 
-Cloak is just another tool that obfuscates any traffic as a legitimate HTTPS traffic. 
+Cloak is just another tool that obfuscates any traffic as a legitimate HTTPS traffic. It can be used to hide other protocols traffic, like [ShadowSocks](https://github.com/cbeuw/Cloak/wiki/Underlying-proxy-configuration-guides#shadowsocks) and even [OpenVPN](https://github.com/cbeuw/Cloak/wiki/Underlying-proxy-configuration-guides#openvpn).
 
 ### Clients
 
@@ -230,11 +253,10 @@ Cloak is just another tool that obfuscates any traffic as a legitimate HTTPS tra
 
 1. [Cloak Github Page](https://github.com/cbeuw/Cloak)
 1. [Useful Scripts](https://github.com/HirbodBehnam/Shadowsocks-Cloak-Installer)
+1. [Cloak Wiki - Underlying proxy configuration guides](https://github.com/cbeuw/Cloak/wiki/Underlying-proxy-configuration-guides)
 
 ----
 
 ## Image Credits
 
-1. <a href="https://www.freepik.com/free-photos-vectors/icon">Icon vector created by rawpixel.com - www.freepik.com</a>
-1. [Cover Image by  Jack Moreh](https://www.stockvault.net/photo/239787/face-off-challenge-between-businessmen-overcoming-barriers)
-1. Diragrams made with [Draw.io](https://www.draw.io/)
+1. Header Image taken from [Freepik](https://www.freepik.com/free-vector/hand-drawing-illustration-lifestyle-concept_2782473.htm). <a href="https://www.freepik.com/free-photos-vectors/icon">Icon vector created by rawpixel.com - www.freepik.com</a>

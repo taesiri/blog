@@ -1,0 +1,74 @@
+{
+  "routing" : {
+    "name" : "all_to_main",
+    "domainStrategy" : "AsIs",
+    "rules" : [
+      {
+        "type" : "field",
+        "outboundTag" : "SOME_TAG",
+        "port" : "0-65535"
+      }
+    ]
+  },
+  "inbounds" : [
+    {
+      "listen" : "0.0.0.0",
+      "protocol" : "socks",
+      "settings" : {
+        "ip" : "127.0.0.1",
+        "auth" : "noauth",
+        "udp" : true
+      },
+      "tag" : "socksinbound",
+      "port" : 1081
+    },
+    {
+      "listen" : "0.0.0.0",
+      "protocol" : "http",
+      "settings" : {
+        "timeout" : 0
+      },
+      "tag" : "httpinbound",
+      "port" : 8001
+    }
+  ],
+  "dns" : {
+    "servers" : [
+      "1.1.1.1"
+    ]
+  },
+  "outbounds" : [
+    {
+      "sendThrough" : "0.0.0.0",
+      "mux" : {
+        "enabled" : false,
+        "concurrency" : 8
+      },
+      "protocol" : "vmess",
+      "settings" : {
+        "vnext" : [
+          {
+            "address" : "SERVER-URL-HERE",
+            "users" : [
+              {
+                "id" : "UUID-HERE",
+                "alterId" : 64,
+                "security" : "auto",
+                "level" : 1
+              }
+            ],
+            "port" : 443
+          }
+        ]
+      },
+      "tag" : "V2HERO-HEROKU",
+      "streamSettings": {
+          "network": "ws",
+          "security": "tls",
+          "wsSettings": {
+              "path": "/"
+          }
+      }
+    }
+  ]
+}
