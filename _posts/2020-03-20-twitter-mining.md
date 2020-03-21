@@ -119,7 +119,7 @@ print("Somehow zombie has escaped...!")
 
 ## Do some plotting
 
-Before jumping into the NLP part, and after collecting some data, It is always nice to plot some aspect of you collected data. The very first thing to come to mind is to plot a heatmap of twitter's activity in each hour. When doing this for all of your tweets, regardless of a tweet is an original tweet or a re-tweet, it gives an interesting chart about what hour people go to sleep.
+Before jumping into the NLP part, and after collecting some data, It is always nice to plot some aspect of you collected data. The very first thing to come to mind is to plot a heatmap of twitter's activity in each hour. So I decided to choose some Emojis and plot their original activity (only original tweets, not the re-tweets).
 
 <div id="dataset-picker" align='center'></div>
 <br>
@@ -128,7 +128,7 @@ Before jumping into the NLP part, and after collecting some data, It is always n
 <script type="text/javascript">
 
       const url_template = "https://raw.githubusercontent.com/taesiri/looking_glass/master/data/WORD.csv"
-      const words_list = ['ALL-STATS', 'ازدواج', 'بچه', 'تعداد', 'تولد', 'جمعیت', 'خارج', 'خانه', 'رشد', 'رفتن', 'زنان', 'فرزند', 'فقر', 'مالی', 'مهاجرت', 'پولدار', 'کار', ]
+      const words_list = ['😀', '😃', '😄', '😁', '😆', '😅', '😂', '🤣', '😍', '🍆', '🤔', '😱', '👍🏻', '😭', '🤬', '😡', '🤯', '💩', '🤐', '😧', '🧐', '🤓']
 
       function word_to_url(word_to_load) {
         return url_template.replace('WORD', word_to_load)
@@ -143,7 +143,7 @@ Before jumping into the NLP part, and after collecting some data, It is always n
           colors = ['#ffffe5', '#fff8c4', '#feeba2', '#fed676', '#febb4a', '#fb9a2c', '#ee7919', '#d85b0a', '#b74304', '#8f3204', '#8f3204'], // alternatively colorbrewer.YlGnBu[9]
           days = ["We", "Th", "Fr", "Sa", "Su", "Mo", "Tu", "We"],
           times = ["12A", "1A", "2A", "3A", "4A", "5A", "6A", "7A", "8A", "9A", "10A", "11A", "12P", "1P", "2P", "3P", "4P", "5P", "6P", "7P", "8P", "9P", "10P", "11P"];
-          datasets = ['All-Stats', 'Jameh'];
+          datasets = ['😀', 'Jameh'];
 
       var svg = d3.select("#chart").append("svg")
           .attr("width", width + margin.left + margin.right)
@@ -249,7 +249,13 @@ Before jumping into the NLP part, and after collecting some data, It is always n
 
 ----
 
-TBC ..
+## Embeddings
+
+The very first thing toward having a usable model is to train Embedding of words or sentences. This embedding takes our words and converts them into a set of a high dimensional vector. These vectors have the underlying knowledge of our language and put "similar" words together. For example, the words that tend to occur together ended up having a very "close" vectors. If you want to learn more about this, please take a look at the reference section for a couple of tutorials on this.
+
+I decided to train two embedding models on my twitter collection, FastText, and GloVe for now. (These models represent each word with a static vector for all contexts,  there are more sophisticated models which factors context into account, like ELMO, more on this later). By using embeddings, I'd like to capture the meaning of each emoji and how people used it on Twitter. For example, Is there any high degree of relation between the Eggplant emoji and profanity words in tweets?
+
+TBC...
 
 ----
 
@@ -259,6 +265,9 @@ TBC ..
 1. [D3.js](https://d3js.org/)
 1. [D3 Heatmap Tutorial](https://www.d3-graph-gallery.com/heatmap)
 1. [D3 - Day / Hour Heatmap](http://bl.ocks.org/tjdecke/5558084)
+1. [FastText - Library for efficient text classification and representation learning](https://fasttext.cc/)
+1. [GloVe: Global Vectors for Word Representation Jeffrey Pennington](https://nlp.stanford.edu/projects/glove/)
+1. [ELMo - Deep contextualized word representations](https://allennlp.org/elmo)
 
 ## Image Credits
 
