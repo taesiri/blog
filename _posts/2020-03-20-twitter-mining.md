@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Mining Twitter for Training Language Models [DRAFT]"
+title: "Mining Twitter for Training Language Models"
 author: "Mohammad Reza Taesiri"
 categories: nlp
 tags: [NLP, Language Models, Twitter, Social]
@@ -251,17 +251,129 @@ Before jumping into the NLP part, and after collecting some data, It is always n
 
 ## Embeddings
 
-The very first thing toward having a usable model is to train Embedding of words or sentences. This embedding takes our words and converts them into a set of a high dimensional vector. These vectors have the underlying knowledge of our language and put "similar" words together. For example, the words that tend to occur together ended up having a very "close" vectors. If you want to learn more about this, please take a look at the reference section for a couple of tutorials on this.
+{% include images.html url="../assets/img/twitter-mining/wordvectors.png" description="Word Vectors" %}
 
-I decided to train two embedding models on my twitter collection, FastText, and GloVe for now. (These models represent each word with a static vector for all contexts,  there are more sophisticated models which factors context into account, like ELMO, more on this later). By using embeddings, I'd like to capture the meaning of each emoji and how people used it on Twitter. For example, Is there any high degree of relation between the Eggplant emoji and profanity words in tweets?
+The very first thing toward having a usable model is to train Embedding of words or sentences. This embedding takes our words and converts them into a set of a high dimensional vector. These vectors have the underlying knowledge of our language and put "**similar**" words together. For example, the words that tend to occur together ended up having a very "close" vectors. If you want to learn more about this, please take a look at the reference section for a couple of tutorials on this.
 
-TBC...
+I decided to train two embedding models on my twitter collection, ``FastText``, and ``GloVe`` for now. (These models represent each word with a static vector for all contexts,  there are more sophisticated models which factors context into account, like ELMO, more on this later). By using embeddings, I'd like to capture the meaning of each emoji and how people used it on Twitter. For example, Is there any high degree of relation between the Eggplant emoji (🍆) and profanity words in tweets?
+
+So Let's train our Embeddings. First create a text file containing all tweets, one tweet per line. It is also a good idea to clean tweets, for example removing the URLs. After having a file for training, this is all it takes to train an embedding with ``FastText``:
+
+```bash
+# Getting FastText
+git clone https://github.com/facebookresearch/fastText.git
+cd fastText
+make
+sudo python setup.py install # Installing Python Package
+```
+
+```bash
+# Training skipgram
+./fasttext skipgram -input PATH_TO_TEXT_FILE.txt -output TwitterModel_skipgram
+
+# Training cbow
+./fasttext cbow -input PATH_TO_TEXT_FILE.txt -output TwitterModel_cbow
+```
+
+For training ``GloVe`` I slightly modified the [``demo.sh``](https://github.com/stanfordnlp/GloVe/blob/master/demo.sh) script from the official repository, so it does the training on my own text file.
+
+There is a good amount of discussion surrounding the choice of the model on the internet. ``FastText`` is a character-level model and ``GloVe`` is word level. In theory, FastText must perform better on creating vectors for less frequent words, but there is no magic formula here! To get the best results, we must train multiple models and see which one performing better.
+
+## Get Neighbor Words
+
+Luckily the ``FastText`` and ``GloVe`` python packages come with a built-in function to get the "similar" words, that's it, the words that are in the vicinity of a target word.
+
+For ``FastText``:
+
+```python
+# loads a model and return top 16 words in vicinity of 🍆
+import fasttext.util
+fasttext_model = fasttext.load_model('PATH_TO_MODEL')
+fasttext_model.get_nearest_neighbors('🍆', 16)
+```
+
+The Skip-Gram Model:
+
+| Word | Cosine<br>Similarity | Word | Cosine<br>Similarity |
+|:----:|:--------------------:|:----:|:--------------------:|
+| 💩 | 0.699 | شومبوله | 0.673 |
+| تخمم😂 | 0.699 | عضما | 0.666 |
+| 😂😆😁 | 0.698 | 😂😂پ.ن | 0.665 |
+| بخورش😂😂 | 0.695 | ماتحتت؟ | 0.664 |
+| 🍑 | 0.689 | اه🤣 | 0.663 |
+| بخورش😂 | 0.686 | بخورش؟ | 0.663 |
+| تخمم😂😂 | 0.681 | 😝😝😝😝 | 0.660 |
+| ماتحت. | 0.675 | شومبولت | 0.657 |
+
+The Continuous Bag of Words (CBOW)  Model:
+
+| Word | Cosine<br>Similarity | Word | Cosine<br>Similarity |
+|:----:|:--------------------:|:----:|:--------------------:|
+| 😉😂👍 | 0.644 | 💩💩💩 | 0.586 |
+| 😎🤣😂 | 0.608 | 🤣😂 | 0.583 |
+| 😂🤣😂 | 0.607 | 🤣😅🤣 | 0.575 |
+| 😚 | 0.593 | 🔪 | 0.572 |
+| 😉😂🤣 | 0.593 | 💩💩💩💩 | 0.570 |
+| 🍑 | 0.592 | 😝 | 0.565 |
+| 😂🤣. | 0.591 | 😂🤣😅 | 0.563 |
+| 🤣🤣😂 | 0.589 | 💩💩💩💩💩 | 0.559 |
+
+For ``GloVe``:
+
+```python
+# loads a model and return top 16 words in vicinity of 🍆
+from glove import Glove
+glove_model = Glove.load_stanford('PATH_TO_MODEL')
+glove_model.most_similar('🍆', 16)
+```
+
+| Word | Cosine<br>Similarity | Word | Cosine<br>Similarity |
+|:----:|:--------------------:|:----:|:--------------------:|
+| .باشه | 0.684 | بانو... | 0.631 |
+| :))))))))))))))))) | 0.683 | 😂✌ | 0.630 |
+| =))))))))))))))) | 0.674 | :**** | 0.625 |
+| 😛 | 0.649 | ایح | 0.625 |
+| :)))))))))))))))) | 0.640 | ^-^ | 0.625 |
+| 😗 | 0.637 | 😂😆 | 0.624 |
+| بابااا | 0.634 | 😁😁😁😁 | 0.623 |
+| 😂😍 | 0.632 | 🤬🤬 | 0.622 |
+
+As we can see here, the Skip-Gram model captured some Swear/Profanity words. Other models are good at capturing co-occurred emojis with eggplant emoji.
+
+### Vector Changes Through Time
+
+One thing that captures my attention was how these vectors change over time with new tweets. For example on March 15th, a video containing some eggplant went viral. I added a couple of more days to my data and re-trained my word embedding models. Here are my new vectors for ``FastText`` skip-gram model:
+
+
+| Word | Cosine<br>Similarity | Word | Cosine<br>Similarity |
+|:----:|:--------------------:|:----:|:--------------------:|
+| بادمجون!! | 0.833 | بادمجون... | 0.802 |
+| بادمجون! | 0.819 | بادمجونا | 0.801 |
+| بادمجونا؟ | 0.807 | بادمجون؟؟ | 0.794 |
+| بادمجون😂 | 0.807 | بادمجون؟ | 0.792 |
+| بادمجون. | 0.806 | بادمجون😂😂 | 0.791 |
+| بادمجون🍆 | 0.806 | بادمجون) | 0.790 |
+| بادمجون😂😂😂 | 0.805 | بادمجون؟! | 0.790 |
+| بادمجونات | 0.804 | بادمجووون | 0.788 |
+| بادمجون... | 0.802 | بادمجونُ | 0.788 |
+| بادمجونا | 0.801 | بادمجونم | 0.786 |
+| بادمجون؟؟ | 0.794 | بادمجونت | 0.786 |
+| بادمجون؟ | 0.792 | بادمجوووون | 0.783 |
+| بادمجون😂😂 | 0.791 | بادمجونن | 0.782 |
+| بادمجون) | 0.790 | بادمجون | 0.782 |
+| بادمجون؟! | 0.790 | 🍆🍆 | 0.781 |
+| بادمجووون | 0.788 | بادمجان؟ | 0.777 |
+
+What we see here is a completely new set of words. Most of them are different writing of Eggplant in the Persian language. This is a very interesting thing to see on Twitter, How neighbors of a word change over time, with new content, with viral content.
+
+In the upcoming blog post, I am going to train language models on twitter data to see what interesting thing surfaces.
 
 ----
 
 ## Links
 
 1. [Tweepy's Github Page](https://github.com/tweepy/tweepy)
+1. [Twint - An advanced Twitter scraping tool](https://github.com/twintproject/twint)
 1. [D3.js](https://d3js.org/)
 1. [D3 Heatmap Tutorial](https://www.d3-graph-gallery.com/heatmap)
 1. [D3 - Day / Hour Heatmap](http://bl.ocks.org/tjdecke/5558084)
