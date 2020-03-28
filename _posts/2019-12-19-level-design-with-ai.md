@@ -72,7 +72,7 @@ Compositional Pattern Producing Networks or CPPNs was invented by Kenneth O. Sta
 
 {% include images.html url="../assets/img/ai-level-design/endlessforms.png" description="Generating 3D Shapes with CPPNs - EndlessForms" %}
 
-When we use a Neuro-Evolutionary technique, like NEAT, on CPPNs, they can become super powerful. I don’t think generating level with vanilla CPPN be a good idea, (I am not sure, maybe it is or it is not!!), but we certainly can use them somehow in the process. [For example, someone tried to generate trains using CPPNs, but to me, the net results are not very interesting at this stage. [See here for the results](https://silky.github.io/posts/2018-04-15-cppns-for-procedural-landscape-generation.html#bonus-content-17-apr-2018)]
+I don’t think generating level with vanilla CPPN be a good idea, (I am not sure, maybe it is or it is not!!), but we certainly can use them somehow in the process. [For example, someone tried to generate trains using CPPNs, but to me, the net results are not very interesting at this stage. [See here for the results](https://silky.github.io/posts/2018-04-15-cppns-for-procedural-landscape-generation.html#bonus-content-17-apr-2018)]
 
 ### Deep Reinforcement Learning from Human Preferences
 
