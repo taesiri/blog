@@ -1,0 +1,18 @@
+FarDistance :
+  - name: LOD 1
+    path: '../assets/img/lod/outputs/LOD6-Output.jpg'  
+  - name: LOD 2
+    path: '../assets/img/lod/outputs/LOD5-Output.jpg'
+  - name: LOD 3
+    path: '../assets/img/lod/outputs/LOD4-Output.jpg'
+NearDistance :
+  - name: LOD 1
+    path: '../assets/img/lod/outputs/LOD7-Output.jpg'
+  - name: LOD 2
+    path: '../assets/img/lod/outputs/LOD8-Output.jpg'
+  - name: LOD 3
+    path: '../assets/img/lod/outputs/LOD9-Output.jpg'    
+  - name: LOD 4
+    path: '../assets/img/lod/outputs/LOD10-Output.jpg'
+  - name: LOD 5
+    path: '../assets/img/lod/outputs/LOD11-Output.jpg'
